@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Typing Speed Test</h1>
+            <h2 id="msg"></h2>
+            <br>
+            <textarea id="myWords" cols="120" rows="12" placeholder="Check it"></textarea>
+            <br>
+
+            <button id="btn" class="mainbtn">Start</button>
+
+        </div>
+    </div>
+
+    <script>
+        const setofWords = ["You have to fight to reach your dream. You have to sacrifice and work hard for it.",
+            "You can overcome anything, if and only if you love something enough.", 
+            "If I wasn't paid to be a professional footballer, I would willingly play for nothing.",
+            "The best decisions aren't made with your mind, but with your instinct.",
+             "Money is not a motivating factor… My motivation comes from playing the game I love.",
+             "The objective is to win with all the team, personal records are secondary.",
+            "Being a bit famous now gives me the opportunity to help people who really need it, especially children.",
+             "I start early and I stay late, day after day, year after year. It took me 17 years and 114 days to become an overnight success.",
+            "I have no intention of comparing myself with Maradona - I want to make my own history for something I have achieved.", 
+            "Every year I try to grow as a player and not get stuck in a rut. I try to improve my game in every way possible."];
+
+
+            const msg = document.getElementById("msg");
+            const myWords = document.getElementById("myWords");
+            const btn = document.getElementById("btn");
+
+            let startTime,endTime;
+
+
+            const PlayGame = ()=>{
+                let randomNumber = Math.floor(Math.random()*setofWords.length);
+                msg.innerText = setofWords[randomNumber];
+                let date = new Date();
+                startTime = date.getTime();
+                btn.innerText = "Done";
+            }
+
+            const endPlay=()=>{
+                let date = new Date();
+                endTime = date.getTime();
+                let totalTime = (endTime-startTime)/1000;
+                console.log(totalTime);
+
+                let totalString = myWords.value;
+                let wordCount = wordCounter(totalString);
+
+                let speed = Math.round((wordCount/totalTime)*60);
+                let finalMsg = "You typed at "+speed+" words per min";
+                finalMsg+= compareWords(msg.innerText,totalString);
+                msg.innerText=finalMsg;
+            }
+
+            const compareWords=(str1,str2)=>{
+                let words1 = str1.split(" ");
+                let words2 = str2.split(" ");
+                let count = 0;
+
+                words1.forEach(function(item,index){
+                    if(item == words2[index]){
+                        count++;
+                    }
+                })
+
+                let errorWords = words1.length-count;
+
+                return (" "+count+" correct out of "+words1.length+" words and the total number of errors are "+errorWords+" .");
+
+            }
+            const wordCounter = (str)=>{
+                let response = str.split(" ").length;
+                //console.log(response);
+                return response;
+            }
+            btn.addEventListener('click',function(){
+                if(this.innerText=='Start'){
+                    myWords.disabled = false;
+                    PlayGame();
+                }
+                else if(this.innerText = "Done")
+                {
+                    myWords.disabled = true;
+                    btn.innerText = "Start";
+                    endPlay();
+                }
+            })
+
+
+            //dynamic typing test
+            
+            // 1: when user press the start button tehn only activate the text area else disabled it and vice versa.activate
+            // 2: Every time a new set of lines on top. whenever a start button is pressed.not the Done one.
+            // 3:get the time and change the button text to done.
+            // 4: get the end time when user click the done button. find teh total time taken.
+            // 5: find the total words on the setofWords.
+            // 6: find the speed of the user ans show it on the top when user click on done.
+            // 7: then calll the compareWords  and find how many oft he words are matching and how many not>Display the result on top with speed.
+
+    </script>
+
+</body>
+
+</html>
